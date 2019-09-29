@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Start Page</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        input[type=number], input[type=text], select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            resize: vertical;
+        }
+        input[type=checkbox] {
+            height: 41px;
+            width: 24px;
+        }
+
+        label {
+            padding: 12px 12px 12px 0;
+            display: inline-block;
+        }
+
+        input[type=button], input[type=submit] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            float: right;
+        }
+
+        input[type=submit]:hover {
+            background-color: #45a049;
+        }
+
+        .container, fieldset {
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+        
+        fieldset {
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+        
+        .row {
+            margin-top: 6px;
+        }
+        
+        .col-25 {
+            float: left;
+            width: 25%;
+        }
+
+        .col-75 {
+            float: left;
+            width: 75%;
+            
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        /* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+        @media ( max-width : 600px) {
+            .col-25, .col-75, input[type=submit] {
+                width: 100%;
+                margin-top: 0;
+            }
+        }
+        </style>
+    </head>
+    <body>
+        <h1>Quartz Test Page</h1>
+        <section>
+            <h2>Read Status</h2>
+            <ul>
+                <li> <a href="./api/timer">Read Timers</a> </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Create Trigger</h2>
+            <form action="./api/timer" method="POST" enctype="application/x-www-form-urlencoded">
+                <fieldset>
+                    <div class="row">
+                        <div class="col-25"><label>Job to Trigger:</label></div>
+                        <div class="col-75">
+                            <select name="job" required>
+                                <option value="">Select an executor</option>
+                                <option value="ConcurrentCdiTask">ConcurrentCdiTask</option>
+                                <option value="NonConccurentCdiTask">NonConccurentCdiTask</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25"><label>Job data to log:</label></div>
+                        <div class="col-75"><input type="text" name="jobData" required></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25"><label>How often:</label></div>
+                        <div class="col-75"><input type="number" name="triggerCount" value="1" required></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25"><label>Sleep Time in seconds:</label></div>
+                        <div class="col-75"><input type="number" name="jobSleepTime" value="0" required></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25"><label>Fail trigger creation:</label></div>
+                        <div class="col-75"><input type="checkbox" name="failTriggerCreation"></div>
+                    </div>
+                    <div class="row">
+                        <input type="submit" value="Create Job Trigger">
+                    </div>
+                </fieldset>
+            </form>
+        </section>
+        
+        
+        <section>
+            <h2>Manage Quartz</h2>
+            <div class="row">
+                <div class="col-25">
+                    <form action="./api/timer/pause-timers" method="post">
+                        <input type="submit" value="Pause Quartz Timers">
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <form action="./api/timer/resume-timers" method="post">
+                        <input type="submit" value="Resume Quartz Timers">
+                    </form>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>
