@@ -67,14 +67,13 @@ public class TimerConfiguration {
     public void start() {
         setupQuartzSchema();
         startQuartz();
-
     }
     
     private void startQuartz() {
         try {
             // Get scheduler and start it
             final DirectSchedulerFactory schedulerFactory = DirectSchedulerFactory.getInstance();
-            
+            // provide the datasources to quartz
             DBConnectionManager.getInstance()
                     .addConnectionProvider(APP_DS, new SimpleConnectionProvider(appDataSource));
             DBConnectionManager.getInstance()
@@ -84,7 +83,7 @@ public class TimerConfiguration {
             jobStore.setInstanceName("quartz-job-example-store");
             jobStore.setDataSource(APP_DS);
             jobStore.setNonManagedTXDataSource(QUARTZ_DS);
-
+            // use the JEE executor service
             jobStore.setThreadExecutor(new ThreadExecutor() {
                 @Override
                 public void execute(Thread thread) {

@@ -9,7 +9,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.stream.Collectors;
 import javax.enterprise.concurrent.ManagedExecutorService;
-import org.quartz.spi.ThreadExecutor;
 import org.quartz.spi.ThreadPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +16,7 @@ import org.slf4j.LoggerFactory;
 /**
  * We have to bridge the ManagedExecutorService for quartz like the datasource.
  */
-public class SimpleQuartzJeeThreadPool implements ThreadPool, ThreadExecutor {
+public class SimpleQuartzJeeThreadPool implements ThreadPool {
     private static final Logger LOG = LoggerFactory.getLogger(SimpleQuartzJeeThreadPool.class);
 
     private final ManagedExecutorService executorService;
@@ -97,10 +96,5 @@ public class SimpleQuartzJeeThreadPool implements ThreadPool, ThreadExecutor {
 
     @Override
     public void setInstanceName(String schedName) {
-    }
-
-    @Override
-    public void execute(Thread thread) {
-        this.executorService.execute(thread);
     }
 }
