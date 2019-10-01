@@ -10,7 +10,8 @@
     - Queue Capacity: **0**
     - Longing Running to **true**
 - copy war into the autodeploy // or use the IDE
-- add `org.quartz.scheduler.skipUpdateCheck` to **true** to the system properties
+- add `org.quartz.scheduler.skipUpdateCheck` to **true** to the jvm-options
+- add `quartz.node.id` with a unique id to each domain you start as jvm-options
 
 # Links
 - https://devsoap.com/injecting-cdi-managed-beans-into-quarz-jobs/

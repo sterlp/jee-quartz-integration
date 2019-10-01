@@ -1,6 +1,8 @@
 package org.sterl.ee.quartz.timer;
 
 import java.sql.Connection;
+import java.util.UUID;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
@@ -10,6 +12,7 @@ import javax.enterprise.concurrent.ManagedExecutorService;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
+import javax.resource.spi.ConfigProperty;
 import javax.sql.DataSource;
 import liquibase.Liquibase;
 import liquibase.database.DatabaseFactory;
@@ -56,7 +59,7 @@ public class TimerConfiguration {
 
     @Resource(name = "concurrent/quartz-executor")
     private ManagedExecutorService executorService;
-
+    
     private Scheduler scheduler;
     
     static {
@@ -98,7 +101,15 @@ public class TimerConfiguration {
             jobStore.setTablePrefix("QRTZ_");
             jobStore.setDriverDelegateClass("org.quartz.impl.jdbcjobstore.PostgreSQLDelegate");
             
-            schedulerFactory.createScheduler("JEE-QUARTZ", "JEE-QUARTZ-ID", new SimpleQuartzJeeThreadPool(executorService, 20), jobStore);
+            // instance id should differ between the nodes
+            System.getProperties().entrySet().forEach(e -> LOG.info("{} --> {}", e.getKey(), e.getValue()));
+            String quartzNodeId = System.getProperty("quartz.node.id");
+            if (null == quartzNodeId) {
+                LOG.info("'quartz.node.id' not set, will generate unique id, provide if as system argument.");
+                quartzNodeId = UUID.randomUUID().toString().substring(0, 4);
+            }
+            schedulerFactory.createScheduler("JEE-QUARTZ", "JEE-QUARTZ-ID-" + quartzNodeId, 
+                    new SimpleQuartzJeeThreadPool(executorService, 20), jobStore);
             
             scheduler = schedulerFactory.getScheduler("JEE-QUARTZ");
 

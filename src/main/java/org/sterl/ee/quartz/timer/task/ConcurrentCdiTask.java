@@ -16,8 +16,8 @@ public class ConcurrentCdiTask implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         final JobDataMap jobDataMap = context.getMergedJobDataMap();
-        LOG.info("{} with data {} started ...", name, jobDataMap.getString("jobData"));
+        LOG.info("{} with data {} and index {} started ...", name, jobDataMap.getString("jobData"), jobDataMap.get("jobIndex"));
         SleepUtil.sleep(jobDataMap.getLong("jobSleepTime"));
-        LOG.info(".. {} with data {} index {} finsied.", name, jobDataMap.get("jobIndex"), jobDataMap.get("jobData"));
+        LOG.info(".. {} with data {} index {} finished.", name, jobDataMap.get("jobData"), jobDataMap.get("jobIndex"));
     }
 }
